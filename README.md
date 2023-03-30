@@ -1,6 +1,6 @@
 # backup progress
 
-Show the progress of the `backup` job by tailing the cloudwatch logs
+Show the progress of the [backup] job by tailing the cloudwatch logs
 
 ```
 ❯ tail -n +1 -f backup-log-full.log | node progress.js
@@ -48,7 +48,7 @@ Show the progress of the `backup` job by tailing the cloudwatch logs
 You need:
 
 - macos or linux (or a shell that can run `tail`)
-- aws cli installed and configured with access to the PL nitro aws account.
+- aws cli installed and configured with access to the aws account that backup is runnning in
 - node v18
 - `pnpm`
 
@@ -86,3 +86,42 @@ tail -n +1 -f backup-log-full.log | node progress.js
 
 Here we tell `tail -n +1` asks tail to start from the first line of the file, and `-f` has it follow along, outputting new lines as they are added. This means we can start showing progress immediately, and continue as our local copy of the log catches up to the current time.
 
+## Notes
+
+At time of writing (2023-03-29) the following batches have completed. These show up as 99% in the progress indicator when i run it, so it's likely that my local copy of the log has dropped some log lines along the way.
+
+```csv
+@timestamp,@message,file
+2023-03-03 15:57:26.849,2023-03-03T15:57:26.848Z backup:nft-2.json backup complete 🎉,nft-02.json
+2023-02-17 06:53:33.598,2023-02-17T06:53:33.598Z backup:nft-5.json backup complete 🎉,nft-05.json
+2023-02-18 02:58:31.295,2023-02-18T02:58:31.295Z backup:nft-7.json backup complete 🎉,nft-07.json
+2023-02-16 05:48:44.567,2023-02-16T05:48:44.567Z backup:nft-9.json backup complete 🎉,nft-09.json
+2023-03-05 16:34:02.234,2023-03-05T16:34:02.234Z backup:nft-11.json backup complete 🎉,nft-11.json
+2023-02-20 19:43:27.253,2023-02-20T19:43:27.253Z backup:nft-12.json backup complete 🎉,nft-12.json
+2023-02-26 09:31:34.912,2023-02-26T09:31:34.912Z backup:nft-13.json backup complete 🎉,nft-13.json
+2023-03-02 20:51:45.711,2023-03-02T20:51:45.711Z backup:nft-13.json backup complete 🎉,nft-13.json
+2023-03-12 01:38:20.245,2023-03-12T01:38:20.245Z backup:nft-14.json backup complete 🎉,nft-14.json
+2023-03-05 07:18:52.838,2023-03-05T07:18:52.838Z backup:nft-15.json backup complete 🎉,nft-15.json
+2023-03-04 10:33:40.773,2023-03-04T10:33:40.773Z backup:nft-16.json backup complete 🎉,nft-16.json
+2023-03-03 17:15:20.788,2023-03-03T17:15:20.787Z backup:nft-17.json backup complete 🎉,nft-17.json
+2023-03-03 06:28:01.071,2023-03-03T06:28:01.071Z backup:nft-20.json backup complete 🎉,nft-20.json
+2023-03-11 10:04:48.225,2023-03-11T10:04:48.222Z backup:nft-21.json backup complete 🎉,nft-21.json
+2023-03-04 23:52:48.021,2023-03-04T23:52:48.021Z backup:nft-23.json backup complete 🎉,nft-23.json
+2023-03-06 01:34:56.563,2023-03-06T01:34:56.562Z backup:nft-24.json backup complete 🎉,nft-24.json
+2023-02-19 07:14:27.854,2023-02-19T07:14:27.854Z backup:nft-26.json backup complete 🎉,nft-26.json
+2023-03-04 00:30:03.750,2023-03-04T00:30:03.750Z backup:nft-29.json backup complete 🎉,nft-29.json
+```
+
+Per the following query across the last 2 months
+
+```
+fields @timestamp, @message
+| filter @message like "backup complete"
+| sort @timestamp desc
+```
+
+https://us-west-2.console.aws.amazon.com/cloudwatch/home?region=us-west-2#logsV2:logs-insights$3FqueryDetail$3D~(end~'2023-03-30T08*3a20*3a41.000Z~start~'2023-02-01T09*3a08*3a42.000Z~timeType~'ABSOLUTE~tz~'Local~editorString~'fields*20*40timestamp*2c*20*40message*0a*7c*20filter*20*40message*20like*20*22backup*20complete*22*0a*7c*20sort*20*40timestamp*20desc~queryId~'78b3f82c-5b6c-4914-9105-8131076af8a5~source~(~'prod-backup-ipfs-cluster))$26tab$3Dlogs
+
+
+
+[backup]: https://github.com/web3-storage/backup
