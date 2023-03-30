@@ -1,0 +1,22 @@
+{
+  "name": "backup-progress",
+  "version": "1.0.0",
+  "description": "Read the backup logs to determine progress",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "cat backup-log-full.log | node got.js",
+    "tail": "node tail.js",
+    "test": "standard"
+  },
+  "keywords": [],
+  "author": "olizilla",
+  "license": "ISC",
+  "dependencies": {
+    "cli-progress": "^3.12.0",
+    "date-fns": "^2.29.3"
+  },
+  "devDependencies": {
+    "standard": "^17.0.0"
+  }
+}
