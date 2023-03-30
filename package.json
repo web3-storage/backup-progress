@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "cat backup-log-full.log | node got.js",
+    "start": "tail -n +1 -f backup-log-full.log | node progress.js",
     "tail": "node tail.js",
     "test": "standard"
   },
