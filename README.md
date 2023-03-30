@@ -68,7 +68,7 @@ This will create `backup-log-full.log` in the root of the project, and may take 
 
 The command is provided for you to run as you see fit, as you are the boss here, we're just trying to make it easier. It's pretty handy to keep the log tailing serperate from the progress indicating.
 
-### Resuming the tail
+### Resuming the tail
 
 You will at some point want to close your laptop or your network will fail, or aws will just give up. No bother! You can pick up where you left off.
 
